@@ -1,5 +1,5 @@
-console.log("JS chargé");
 
+let worksData = []  //on globalise les works de l'api//
 
 // ----------------------
 // PARTIE GALLERIE
@@ -32,24 +32,31 @@ async function showGallery(works) {
     // ----------------------
 
    async function init() { 
-    const works = await fetchWorks(); 
-    showGallery(works); 
+    if (!document.querySelector(".gallery"))
+        return; // corrige le bug du login//
+
+    worksData = await fetchWorks(); // on envoit les données dans worksdata pour globaliser //
+    console.log("worksData récupéré :", worksData);
+
+    showGallery(worksData);//on appelle la fonction show gallery pour afficher les works//
+    
+
     document.querySelector(".btn-objet").addEventListener("click", () => {
-         showGallery(works.filter(w => w.category.name === "Objets"));
+         showGallery(worksData.filter(w => w.category.name === "Objets"));
          });
 
           document.querySelector(".btn-apt").addEventListener("click", () => {
-             showGallery(works.filter(w => w.category.name === "Appartements"));
+             showGallery(worksData.filter(w => w.category.name === "Appartements"));
              }); 
 
              document.querySelector(".btn-hotel").addEventListener("click", () => {
-                 showGallery(works.filter(w => w.category.name === "Hotels & restaurants")); }); 
+                 showGallery(worksData.filter(w => w.category.name === "Hotels & restaurants")); }); 
 
                  document.querySelector(".btn-tous").addEventListener("click", () => {
-                     showGallery(works);
+                     showGallery(worksData);
                      }); 
                     } 
-                     init();
+    init();
 
 
 // ----------------------
@@ -57,6 +64,7 @@ async function showGallery(works) {
 // ----------------------
 
 const form = document.getElementById("login-form");
+console.log("form=", form);
 
 if (form) {
     form.addEventListener("submit", function (event) {
@@ -87,10 +95,10 @@ async function login(emailValue, passwordValue) {
 
         if (data.token) {
             console.log("Token reçu :", data.token);
-            sessionStorage.setItem("token", data.token);; //session au lieu de local storage pour éviter de garder le token//
+            sessionStorage.setItem("token", data.token); //session au lieu de local storage pour éviter de garder le token//
             window.location.href = "index.html";
         } else {
-            alert("Erreur dans l’identifiant ou le mot de passe");
+            alert("Erreur dans l’identifiant ou le mot de passe.");
         }
 
     } catch (error) {
@@ -104,10 +112,11 @@ async function login(emailValue, passwordValue) {
 
 /// Bouton Logout ///
 const logout = document.getElementById("logout")
+if (logout){
 logout.addEventListener("click", function(event){
     sessionStorage.removeItem("token");
     window.location.reload();
-})
+})}
 
 const token = sessionStorage.getItem("token");
 
@@ -141,20 +150,39 @@ if (token) {
 }
 
 
-
 // Mode Edition // 
 
 // Modale // 
 const modalContainer = document.querySelector("#modal-container")
 const openModal = document.querySelector("#open-modal")
 const modalClose = document.querySelector("#close-modal")
+if (openModal) { //pour rectifier le pb de double pages //
 openModal.addEventListener("click", function(event){
-    (modalContainer),
     modalContainer.style.display = "block";
-})
+    showModalGallery(worksData);
+})}
+if (modalClose){
 modalClose.addEventListener("click", function(){
     (modalContainer)
     modalContainer.style.display = "none";
-})
+})}
 
 
+async function showModalGallery(works) {
+    // Si pas de galerie on est sur login.html //
+    const modalGallery = document.querySelector("#modal-gallery");
+    if (!modalGallery) return;
+    modalGallery.innerHTML = "";
+    
+// Affichage des works
+     works.forEach(work => {
+        const figure = document.createElement("article");
+        const img = document.createElement("img");
+        img.src = work.imageUrl; 
+        const deleteIcon = document.createElement("i")
+        deleteIcon.classList.add("fa-solid","fa-trash-can", "delete-icon")
+
+        figure.appendChild(img); 
+        figure.appendChild(deleteIcon); 
+        modalGallery.appendChild(figure); 
+    }); }

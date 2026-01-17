@@ -139,7 +139,8 @@ li:hover {
 }
 #contact {
 	width: 50%;
-margin: auto;
+    margin: auto;
+	margin-top: 35px;
 }
 #contact > * {
 	text-align: center;
@@ -274,6 +275,8 @@ margin: auto;
 }
 #filtres{
 	display: flex;
+	justify-content: center;
+	margin-bottom: 25px;
 	gap: 20px;
 }
 #logout{
@@ -345,4 +348,18 @@ margin: auto;
 }
 #modal-container{
 	display: none;
+	width: 100%;
+}
+#modal-gallery{
+    display: grid;
+	grid-template-columns: repeat(5,1fr);
+	gap: 15px
+}
+#modal-gallery img{
+	display: block;
+	max-width: 100%;
+	height: auto;
+	
+}#connect{
+	cursor: pointer;
 }
