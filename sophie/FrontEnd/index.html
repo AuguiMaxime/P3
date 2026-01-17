@@ -9,18 +9,24 @@
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
-	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 
 </head>
 <body>
+	<div id="edition">
+    <i class="fa-solid fa-pen-to-square" aria-hidden="true"> </i><span>Mode édition</span>
+    </div>
 <header>
+	   
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
 		<ul>
 			<li> <a href="#portfolio">projets</a></li>
 			<li> <a href="#contact">contact</a></li>
-			<li> <a href="login.html">login</a></li>
+			<li> <a id= "login" href="login.html">login</a></li>
+			<li> <a id="logout" > logout</a></li>
 			<li>
             <a href="https://www.instagram.com/" target="_blank">
             <img src="./assets/icons/instagram.png" alt="Instagram">
@@ -42,17 +48,39 @@
 			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
 		</article>
 	</section>
+        <div id="modal-container">
+			<div class="overlay"></div>
+			<div id="modal">
+		      <button id="close-modal">X</button>
+		      <h3>Galerie photo</h3>
+		      <div id="modal-gallery"></div>
+			  <div id="border-modal"></div>
+			  <button id="add-img"> Ajouter une photo</button>
+			  </div>
+		</div>
+
+
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
-		<nav class="filters">
-		<button class="btn-tous"> Tous </button>
-		<button class="btn-objet"> Objets </button>
-		<button class="btn-apt"> Appartement </button>
-		<button class="btn-hotel"> Hotels & restaurants </button>
-		</nav>
-		
-	</section>
+    <h2>Mes Projets</h2>
+	<div id="modify">
+        <button id="open-modal" >   
+			<i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> modifier</button>
+    </div>
+
+    <div id="filtres">
+        <button class="btn-tous"> Tous </button>
+        <button class="btn-objet"> Objets </button>
+        <button class="btn-apt"> Appartement </button>
+        <button class="btn-hotel"> Hotels & restaurants </button>
+    </div>
+
+   
+</section>
+
+
 	<section class="gallery"></section>
+
+
 	<section id="contact">
 		<h2>Contact</h2>
 		<p>Vous avez un projet ? Discutons-en !</p>
