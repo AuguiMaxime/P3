@@ -31,7 +31,7 @@ async function showGallery(works) {
     // BOUTONS FILTRES + init
     // ----------------------
 
-   async function init() { 
+   async function initWork() { 
     if (!document.querySelector(".gallery"))
         return; // corrige le bug du login//
 
@@ -40,23 +40,26 @@ async function showGallery(works) {
 
     showGallery(worksData);//on appelle la fonction show gallery pour afficher les works//
     
-
-        document.querySelector(".btn-objet").addEventListener("click", () => {
-         showGallery(worksData.filter(w => w.category.name === "Objets"));
+    const btnObjet = document.querySelector(".btn-objet")
+        btnObjet.innerText = worksData[0].category.name;
+        btnObjet.addEventListener("click", () => {
+         showGallery(worksData.filter(w => w.category.name === btnObjet.innerText));
          });
-
-        document.querySelector(".btn-apt").addEventListener("click", () => {
-             showGallery(worksData.filter(w => w.category.name === "Appartements"));
-             }); 
-
-        document.querySelector(".btn-hotel").addEventListener("click", () => {
-                 showGallery(worksData.filter(w => w.category.name === "Hotels & restaurants")); }); 
-
+    const btnApt = document.querySelector(".btn-apt")
+        btnApt.innerText = worksData[1].category.name;
+        btnApt.addEventListener("click", () => {
+         showGallery(worksData.filter(w => w.category.name === btnApt.innerText));
+         });
+    const btnHotel = document.querySelector(".btn-hotel")
+        btnHotel.innerText = worksData[2].category.name;
+        btnHotel.addEventListener("click", () => {
+         showGallery(worksData.filter(w => w.category.name === btnHotel.innerText));
+         });
         document.querySelector(".btn-tous").addEventListener("click", () => {
                      showGallery(worksData);
     }); 
     } 
-    init();
+    initWork();
 
 
 // ----------------------
@@ -130,10 +133,7 @@ if (token) {
     if (filtres) {
         filtres.style.display = "none";
     }
-
-    const modify = document.querySelector("#modify");
-    if (modify) {
-        modify.style.display = "flex";
+   
 
         const logged = document.querySelector("#login");
     if (logged) {
@@ -146,43 +146,126 @@ if (token) {
         if (portfolio) {
             portfolio.style.display = "flex"
         }
-    }
-}
 
+        const modalButton = document.querySelector(".js-modal")
+        if (modalButton) {
+            modalButton.style.display = null
+        }
+
+        
+    }
 
 // Mode Edition // 
 
-// Modale // 
-const modalContainer = document.querySelector("#modal-container")
-const openModal = document.querySelector("#open-modal")
-const modalClose = document.querySelector("#close-modal")
-if (openModal) { //pour rectifier le pb de double pages //
-openModal.addEventListener("click", function(event){
-    modalContainer.style.display = "block";
-    showModalGallery(worksData);
-})}
-if (modalClose){
-modalClose.addEventListener("click", function(){
-    (modalContainer)
-    modalContainer.style.display = "none";
-})}
+// MODALE //
+//ouverture modale//
+let modal = null
+const openModal= function(e){
+    e.preventDefault()
+    const target = document.querySelector(e.target.getAttribute("href"))
+    target.style.display = null
+    target.removeAttribute("aria-hidden")
+    target.setAttribute("aria-modal","true")
+    showModalGallery(worksData)
+    modal = target
+    modal.addEventListener("click", closeModal)
+    modal.querySelector(".js-modal-close").addEventListener("click", closeModal)
+    modal.querySelector(".js-modal-stop").addEventListener("click", stopPropagation)
 
+}
+//ouverture modale//
+document.querySelectorAll(".js-modal").forEach(a=> {
+    a.addEventListener("click", openModal)
+})
 
-async function showModalGallery(works) {
-    // Si pas de galerie on est sur login.html //
-    const modalGallery = document.querySelector("#modal-gallery");
-    if (!modalGallery) return;
-    modalGallery.innerHTML = "";
+//fermeture modale //
+const closeModal = function(e){
+    if (modal === null)
+        return
+    e.preventDefault()
+    window.setTimeout (function(){
+        modal.style.display = "none"
+        modal = null
+    },500)
     
-// Affichage des works
-     works.forEach(work => {
-        const figure = document.createElement("article");
-        const img = document.createElement("img");
-        img.src = work.imageUrl; 
-        const deleteIcon = document.createElement("i")
-        deleteIcon.classList.add("fa-solid","fa-trash-can", "delete-icon")
+    modal.setAttribute("aria-hidden","true")
+    modal.removeAttribute("aria-modal")
+    modal.removeEventListener("click", closeModal)
+    modal.querySelector(".js-modal-close").removeEventListener("click", closeModal)
+    modal.querySelector(".js-modal-stop").removeEventListener("click", stopPropagation)
+    
+}
 
-        figure.appendChild(img); 
-        figure.appendChild(deleteIcon); 
-        modalGallery.appendChild(figure); 
-    }); }
+// garder le clic dans la modale//
+const stopPropagation = function(e){
+    e.stopPropagation()
+}
+
+// fermeture touche échap//
+window.addEventListener("keydown", function(e){
+    if (e.key==="Escape" || e.key === "Esc"){
+        closeModal(e)
+    }
+})
+// changement de titre // 
+const modalH3 = document.querySelector("#title-modal")
+
+
+// Affichage de la gallerie dans la modale // 
+async function showModalGallery(works) {
+    modalH3.innerText = "Galerie photo"
+    // Si pas de galerie → on est sur login.html
+    const sectionModalGallery = document.querySelector(".modal-gallery");
+    if (!sectionModalGallery) return;
+    sectionModalGallery.innerHTML = "";
+    // Affichage des works//
+     works.forEach(article => {
+        const worksElement = document.createElement("article");
+        const imageElement = document.createElement("img");
+        imageElement.src = article.imageUrl;
+         //bouton supprimer //
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("delete-btn");
+    deleteButton.textContent = "🗑";
+
+        worksElement.appendChild(imageElement); 
+        worksElement.appendChild(deleteButton) ;
+        sectionModalGallery.appendChild(worksElement); 
+    });
+}
+// Modale //
+const modalForm = document.querySelector(".form-modal")
+const modalAddContent = document.querySelector(".add-content")
+const modalAddImage = document.querySelector(".modal-add-img-btn")
+const modalPrevious = document.querySelector(".modal-previous")
+modalAddImage.innerText = "Ajouter une photo"
+const modalAddImageButton = document.querySelector(".add-img-button")
+modalAddImageButton.innerText= "+Ajouter photo"
+
+// Deuxième modale //
+modalAddImage.addEventListener("click", function(){
+        modalH3.innerText = "Ajout photo"
+        modalPrevious.style.display = null;
+        const sectionModalGallery = document.querySelector(".modal-gallery");
+        sectionModalGallery.style.display = "none";
+        modalAddContent.style.display = null;
+        modalForm.style.display = null;
+        modalAddImage.style.display = "none"
+        const modalImageBtn = document.querySelector(".send-img-btn")
+        modalImageBtn.innerText = "Valider"
+        modalImageBtn.style.display = null
+}
+)
+// bouton précédent // 
+modalPrevious.addEventListener("click", function(){
+    modalH3.innerText = "Galerie photo"
+    modalPrevious.style.display = "none";
+        const sectionModalGallery = document.querySelector(".modal-gallery");
+        sectionModalGallery.style.display = null;
+        modalAddContent.style.display = "none";
+        modalForm.style.display = "none";
+        modalAddImage.style.display = null
+        const modalImageBtn = document.querySelector(".send-img-btn")
+        modalImageBtn.innerText = "Valider"
+        modalImageBtn.style.display = "none"
+})

@@ -48,51 +48,45 @@
 			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
 		</article>
 	</section>
-        <div id="modal-container">
-			<div class="overlay"></div>
-			<div id="modal">
-		      <button id="close-modal">X</button>
-			  <button id="previous"> --- </button>
-		      <h3>Galerie photo</h3>
-		      <div id="modal-gallery"></div>
-			  <div id="modal-add">
-				<img src=""> <img>
-				<button id="button-add-img" type="submit"> + Ajouter une photo</button>
-				<p>jpg.png : 4mo max</p>
-				<form id="login-form" >
-			<label for="Titre">Titre</label>
-			<input type="title" name="title" id="title">
-			<label for="name">Catégorie</label>
-			<input type="name" name="name" id="name">
-			</form>
-				
-
-			  </div>
-			  <div id="border-modal"></div>
-			  <button id="button-modal-add" type="submit"> Ajouter une photo</button>
-			  <button id="button-add" type="submit">Valider</button>
-			  </div>
-		</div>
-
 
 	<section id="portfolio">
-    <h2>Mes Projets</h2>
-	<div id="modify">
-        <button id="open-modal" >   
-			<i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> modifier</button>
-    </div>
-
+        <h2>Mes Projets</h2>
+	    <a href="#modal1" class="js-modal" style="display: none">modifier</a>
     <div id="filtres">
-        <button class="btn-tous"> Tous </button>
-        <button class="btn-objet"> Objets </button>
-        <button class="btn-apt"> Appartement </button>
-        <button class="btn-hotel"> Hotels & restaurants </button>
-    </div>
-
-    
+        <button class="btn-tous">Tous</button>
+        <button class="btn-objet"></button>
+        <button class="btn-apt"></button>
+        <button class="btn-hotel"></button>
+    </div>  
 </section>
 
-<div class="gallery"></div>
+
+<aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-labelledby="title-modal" style="display: none">
+		   <div class="modal-wrapper js-modal-stop">
+			<button class="modal-previous" style="display: none"><img src="assets/icons/arrow-left.png"></button>
+			<button class="js-modal-close"><img src="assets/icons/close.png"></button>
+			<h3 id="title-modal"></h3>
+			<div id="modal-gallery" class="modal-gallery"></div>
+			<div id="add-content" class="add-content" style="display: none">
+				<img src="assets/icons/picture.png" >
+				<button id="add-img-button" type="submit" class="add-img-button"></button>
+				<p>jpg.png : 4mo max</p>
+			</div>
+			<form id="form-modal" class="form-modal" style="display: none">
+			<label for="work-title">Titre</label>
+			<input type="text" name="title" id="work-title">
+			<label for="category">Catégorie</label>
+			<input type="category" name="category" id="category">
+			</form>
+			<div class="border"></div>
+			<button type="submit" class="send-img-btn" id="send-img-btn" style="display: none"></button>
+			<button type="submit" id="modal-add-img-btn" class="modal-add-img-btn" ></button>
+		</div>
+	</aside>
+    
+	
+	
+	<div class="gallery"></div>
 	
 
 
