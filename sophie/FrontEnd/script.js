@@ -41,21 +41,21 @@ async function showGallery(works) {
     showGallery(worksData);//on appelle la fonction show gallery pour afficher les works//
     
 
-    document.querySelector(".btn-objet").addEventListener("click", () => {
+        document.querySelector(".btn-objet").addEventListener("click", () => {
          showGallery(worksData.filter(w => w.category.name === "Objets"));
          });
 
-          document.querySelector(".btn-apt").addEventListener("click", () => {
+        document.querySelector(".btn-apt").addEventListener("click", () => {
              showGallery(worksData.filter(w => w.category.name === "Appartements"));
              }); 
 
-             document.querySelector(".btn-hotel").addEventListener("click", () => {
+        document.querySelector(".btn-hotel").addEventListener("click", () => {
                  showGallery(worksData.filter(w => w.category.name === "Hotels & restaurants")); }); 
 
-                 document.querySelector(".btn-tous").addEventListener("click", () => {
+        document.querySelector(".btn-tous").addEventListener("click", () => {
                      showGallery(worksData);
-                     }); 
-                    } 
+    }); 
+    } 
     init();
 
 
